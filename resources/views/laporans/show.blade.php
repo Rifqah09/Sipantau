@@ -22,28 +22,37 @@
 
                 <div class="flex flex-col gap-6 lg:flex-row lg:items-start lg:justify-between">
                     <div class="space-y-4">
-                        <div class="flex flex-wrap items-center gap-2 text-sm text-slate-500">
-                            <span class="inline-flex rounded-full bg-slate-100 px-3 py-1">{{ ucfirst($laporan->status) }}</span>
-                            <span>{{ $laporan->created_at->translatedFormat('d M Y H:i') }}</span>
-                                @if($laporan->tanggal)
-                                    <span>• Tanggal: {{
-                                        (is_string($laporan->tanggal) ? \Carbon\Carbon::parse($laporan->tanggal)->translatedFormat('d M Y') : $laporan->tanggal->translatedFormat('d M Y'))
-                                    }}</span>
-                                @endif
-                            <span>oleh {{ $laporan->user->name }}</span>
+                        <div class="flex flex-wrap items-center gap-3 text-sm">
+                            @php
+                                $statusClass = match($laporan->status) {
+                                    'menunggu' => 'bg-yellow-100 text-yellow-800',
+                                    'diproses' => 'bg-sky-100 text-sky-800',
+                                    'selesai' => 'bg-emerald-100 text-emerald-800',
+                                    'ditolak' => 'bg-rose-100 text-rose-800',
+                                    default => 'bg-slate-100 text-slate-700',
+                                };
+                            @endphp
+                            <span class="inline-flex rounded-full px-3 py-1 font-semibold {{ $statusClass }}">{{ ucfirst($laporan->status) }}</span>
+                            <span class="text-slate-500">{{ $laporan->created_at->translatedFormat('d M Y H:i') }}</span>
+                            @if($laporan->tanggal)
+                                <span class="text-slate-500">• Tanggal: {{ (is_string($laporan->tanggal) ? \Carbon\Carbon::parse($laporan->tanggal)->translatedFormat('d M Y') : $laporan->tanggal->translatedFormat('d M Y')) }}</span>
+                            @endif
+                            <span class="text-slate-500">• oleh {{ $laporan->user->name }}</span>
                         </div>
+
                         <h1 class="text-3xl font-semibold text-slate-900">{{ $laporan->judul }}</h1>
                         <p class="text-sm leading-7 text-slate-600">{{ $laporan->deskripsi }}</p>
-                        <div class="rounded-3xl bg-slate-50 p-4 text-sm text-slate-700">
+
+                        <div class="rounded-3xl bg-white p-4 text-sm text-slate-700 border border-slate-200 shadow-sm">
                             <p class="font-semibold">Lokasi:</p>
                             <p>{{ $laporan->lokasi }}</p>
                             @if($laporan->latitude && $laporan->longitude)
-                                <p>{{ $laporan->latitude }}, {{ $laporan->longitude }}</p>
+                                <p class="mt-2 text-sm text-slate-500">{{ $laporan->latitude }}, {{ $laporan->longitude }}</p>
                             @endif
                         </div>
 
                         @if($laporan->verifikasiLaporans->isNotEmpty())
-                            <div class="rounded-3xl border border-slate-200 bg-white p-4 text-sm text-slate-700">
+                            <div class="rounded-3xl bg-white p-4 text-sm text-slate-700 border border-slate-200 shadow-sm">
                                 <p class="font-semibold text-slate-900">Hasil Verifikasi</p>
                                 <p class="mt-2">Status: <span class="font-semibold">{{ ucfirst($laporan->verifikasiLaporans->last()->status) }}</span></p>
                                 <p class="mt-2">Catatan: {{ $laporan->verifikasiLaporans->last()->catatan ?? 'Tidak ada catatan.' }}</p>
@@ -51,10 +60,10 @@
                         @endif
 
                         @if($laporan->tanggapans->isNotEmpty())
-                            <div class="rounded-3xl border border-slate-200 bg-slate-50 p-4 text-sm text-slate-700">
+                            <div class="rounded-3xl bg-white p-4 text-sm text-slate-700 border border-slate-200 shadow-sm">
                                 <p class="font-semibold text-slate-900">Riwayat Penanganan</p>
                                 @foreach($laporan->tanggapans as $tanggapan)
-                                    <div class="mt-4 rounded-3xl border border-slate-200 bg-white p-4">
+                                    <div class="mt-4 rounded-2xl bg-slate-50 p-4">
                                         <p class="text-sm font-semibold text-slate-900">{{ $tanggapan->petugas->name }}</p>
                                         <p class="mt-1 text-sm text-slate-600">{{ $tanggapan->isi_tanggapan }}</p>
                                         @if($tanggapan->foto_bukti)
@@ -65,10 +74,10 @@
                             </div>
                         @endif
                     </div>
-                    <div class="space-y-3 rounded-3xl border border-slate-200 bg-slate-50 p-6">
+                    <div class="space-y-3 rounded-3xl bg-white p-6 border border-slate-200 shadow-sm">
                         <p class="text-sm font-semibold text-slate-700">Aksi</p>
                         @if(auth()->user()->isAdmin() || auth()->id() === $laporan->user_id)
-                            <a href="{{ route('laporans.edit', $laporan) }}" class="block rounded-2xl bg-white px-4 py-2 text-sm font-semibold text-slate-700 border border-slate-200 hover:bg-slate-100 transition">Edit Laporan</a>
+                            <a href="{{ route('laporans.edit', $laporan) }}" class="block rounded-2xl bg-white px-4 py-2 text-sm font-semibold text-slate-700 border border-slate-200 hover:bg-slate-50 transition">Edit Laporan</a>
                             <form action="{{ route('laporans.destroy', $laporan) }}" method="POST" onsubmit="return confirm('Hapus laporan ini?');">
                                 @csrf
                                 @method('DELETE')
@@ -76,7 +85,7 @@
                             </form>
                         @endif
                         @if(auth()->user()->isPetugas() && $laporan->status === 'diproses')
-                            <a href="{{ route('tanggapans.create') }}?laporan_id={{ $laporan->id }}" class="block rounded-2xl bg-emerald-700 px-4 py-2 text-sm font-semibold text-white hover:bg-emerald-800 transition">Tangani Laporan</a>
+                            <a href="{{ route('tanggapans.create') }}?laporan_id={{ $laporan->id }}" class="block rounded-2xl bg-gradient-to-r from-emerald-600 to-emerald-700 px-4 py-2 text-sm font-semibold text-white hover:from-emerald-700 hover:to-emerald-800 transition">Tangani Laporan</a>
                         @endif
                     </div>
                 </div>

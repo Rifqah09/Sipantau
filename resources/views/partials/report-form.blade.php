@@ -1,7 +1,12 @@
 <!-- Report Form Panel -->
-<div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 h-fit sticky top-6">
-    <h3 class="text-lg font-bold text-slate-900 mb-2">Buat Laporan Baru</h3>
-    <p class="text-sm text-slate-600 mb-6">Isi detail di bawah untuk melaporkan masalah.</p>
+<div class="rounded-3xl bg-gradient-to-br from-white/60 to-emerald-50/30 backdrop-blur border border-slate-200 p-6 h-fit sticky top-6 shadow-lg">
+    <div class="flex items-center justify-between mb-4">
+        <div>
+            <h3 class="text-lg font-bold text-slate-900">Buat Laporan Baru</h3>
+            <p class="text-sm text-slate-600">Isi detail di bawah untuk melaporkan masalah.</p>
+        </div>
+        <div class="inline-flex items-center rounded-full bg-emerald-100/60 px-3 py-2 text-emerald-700 text-xs font-semibold">Tidak lebih dari 5 MB</div>
+    </div>
 
     <form method="POST" action="{{ route('laporans.store') }}" enctype="multipart/form-data" class="space-y-4">
         @csrf
@@ -64,13 +69,13 @@
             @enderror
         </div>
 
-        <button type="submit" class="w-full px-4 py-3 bg-emerald-700 hover:bg-emerald-800 text-white font-semibold rounded-xl transition duration-200 flex items-center justify-center gap-2 mt-6">
+        <button type="submit" class="w-full px-4 py-3 bg-gradient-to-r from-emerald-600 to-emerald-700 hover:from-emerald-700 hover:to-emerald-800 text-white font-semibold rounded-2xl transition duration-200 flex items-center justify-center gap-2 mt-6 shadow-md">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
             </svg>
             Kirim Laporan
         </button>
 
-        <p class="text-xs text-slate-500 text-center mt-4">Laporan Anda akan kami verifikasi dalam 24 jam.</p>
+        <p class="text-xs text-slate-500 text-center mt-4">Laporan Anda akan diverifikasi dalam 24 jam.</p>
     </form>
 </div>
