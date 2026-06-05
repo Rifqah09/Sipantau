@@ -1,21 +1,14 @@
-<!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>Dashboard Masyarakat | SIPANTAU</title>
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
-</head>
-<body class="bg-slate-50 text-slate-900">
-    <div class="flex h-screen">
-        <!-- Sidebar -->
-        @include('partials.sidebar')
+<x-app-layout>
+    <x-slot name="header">
+        <div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+            <div>
+                <h2 class="font-semibold text-xl text-gray-800 leading-tight">{{ __('Dashboard Masyarakat') }}</h2>
+                <p class="text-sm text-slate-500">Kelola semua laporan lingkungan Anda di sini.</p>
+            </div>
+        </div>
+    </x-slot>
 
-        <!-- Main Content -->
-        <div class="flex-1 flex flex-col overflow-hidden">
-            <!-- Top Bar -->
-            <div class="bg-white border-b border-slate-200 px-8 py-5 flex items-center justify-between">
+    <div class="bg-white border-b border-slate-200 px-8 py-5 flex items-center justify-between">
                 <div>
                     <h1 class="text-2xl font-bold text-slate-900">Laporan Saya</h1>
                     <p class="text-sm text-slate-600 mt-1">Kelola semua laporan lingkungan Anda di sini</p>
@@ -123,5 +116,4 @@
             });
         }
     </script>
-</body>
-</html>
+</x-app-layout>

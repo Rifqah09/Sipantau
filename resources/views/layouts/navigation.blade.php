@@ -7,10 +7,11 @@
                 </a>
 
                 <nav class="hidden lg:flex items-center gap-6 text-sm font-medium text-slate-700">
-                    <a href="{{ route('dashboard') }}" class="transition hover:text-emerald-700">Dashboard</a>
-                    <a href="{{ route('peta') }}" class="transition hover:text-emerald-700">Peta</a>
-                    <a href="{{ route('laporans.index') }}" class="transition hover:text-emerald-700">Lapor</a>
-                    <a href="{{ route('verifikasi-laporans.index') }}" class="transition hover:text-emerald-700">Verifikasi</a>
+                    <a href="{{ route('dashboard') }}" class="{{ request()->routeIs('dashboard','admin.dashboard','petugas.dashboard') ? 'text-emerald-900 font-semibold' : 'transition hover:text-emerald-700' }}">Dashboard</a>
+                    <a href="{{ route('laporans.index') }}" class="{{ request()->routeIs('laporans.*') ? 'text-emerald-900 font-semibold' : 'transition hover:text-emerald-700' }}">Laporan</a>
+                    @if(auth()->user()->isAdmin())
+                        <a href="{{ route('verifikasi-laporans.index') }}" class="{{ request()->routeIs('verifikasi-laporans.*') ? 'text-emerald-900 font-semibold' : 'transition hover:text-emerald-700' }}">Verifikasi</a>
+                    @endif
                 </nav>
             </div>
 
@@ -44,10 +45,11 @@
 
     <div :class="{'block': open, 'hidden': ! open}" class="hidden lg:hidden">
         <div class="pt-2 pb-3 space-y-1 px-4">
-            <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">Dashboard</x-responsive-nav-link>
-            <x-responsive-nav-link :href="route('peta')">Peta</x-responsive-nav-link>
-            <x-responsive-nav-link :href="route('laporans.index')">Lapor</x-responsive-nav-link>
-            <x-responsive-nav-link :href="route('verifikasi-laporans.index')">Verifikasi</x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard','admin.dashboard','petugas.dashboard')">Dashboard</x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('laporans.index')" :active="request()->routeIs('laporans.*')">Laporan</x-responsive-nav-link>
+            @if(auth()->user()->isAdmin())
+                <x-responsive-nav-link :href="route('verifikasi-laporans.index')" :active="request()->routeIs('verifikasi-laporans.*')">Verifikasi</x-responsive-nav-link>
+            @endif
         </div>
         <div class="pt-4 pb-1 border-t border-slate-200 px-4">
             <div class="font-medium text-base text-slate-800">{{ Auth::user()->name }}</div>

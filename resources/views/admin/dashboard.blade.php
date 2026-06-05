@@ -1,36 +1,14 @@
-<!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>Dashboard Admin | SIPANTAU</title>
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
-</head>
-<body class="bg-slate-50 text-slate-900">
-    <div class="flex h-screen">
-        @include('partials.sidebar')
-
-        <div class="flex-1 flex flex-col overflow-hidden">
-            <div class="bg-white border-b border-slate-200 px-8 py-5 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-                <div>
-                    <h1 class="text-3xl font-bold text-slate-900">Dashboard Admin</h1>
-                    <p class="text-sm text-slate-600 mt-1">Ringkasan laporan, verifikasi, dan aktivitas masyarakat.</p>
-                </div>
-                <div class="flex items-center gap-4">
-                    <a href="{{ route('profile.edit') }}" title="Edit Profil" class="rounded-full bg-emerald-100 p-3 inline-flex items-center justify-center text-emerald-700 hover:bg-emerald-200 transition">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2a4 4 0 014-4h4m-8 6h6m6 2v-5a2 2 0 00-2-2h-5M7 9V7a2 2 0 012-2h5a2 2 0 012 2v2" />
-                        </svg>
-                    </a>
-                    <div class="text-right">
-                        <p class="text-sm text-slate-500">Selamat datang, Admin</p>
-                        <p class="text-xl font-semibold text-slate-900">{{ auth()->user()->name }}</p>
-                    </div>
-                </div>
+<x-app-layout>
+    <x-slot name="header">
+        <div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+            <div>
+                <h2 class="font-semibold text-xl text-gray-800 leading-tight">{{ __('Dashboard Admin') }}</h2>
+                <p class="text-sm text-slate-500">Ringkasan laporan, verifikasi, dan aktivitas masyarakat.</p>
             </div>
+        </div>
+    </x-slot>
 
-            <div class="flex-1 overflow-auto p-8 space-y-6">
+    <div class="flex-1 overflow-auto p-8 space-y-6">
                 <div class="grid gap-6 sm:grid-cols-2 xl:grid-cols-4">
                     <div class="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
                         <p class="text-sm text-slate-500">Total Laporan</p>
@@ -105,7 +83,4 @@
                     </aside>
                 </div>
             </div>
-        </div>
-    </div>
-</body>
-</html>
+</x-app-layout>

@@ -1,12 +1,80 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html lang="id">
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Peta | SIPANTAU</title>
+        <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+        <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
         <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-o9N1j7QZjY2WEXfDYxVROUVG8qd0P6ND1Z9Mw5LC+9Y=" crossorigin="" />
-        @vite(['resources/css/app.css', 'resources/js/app.js'])
+        <script id="tailwind-config">
+            tailwind.config = {
+                darkMode: "class",
+                theme: {
+                    extend: {
+                        "colors": {
+                            "on-primary-fixed-variant": "#005236",
+                            "surface-container-low": "#f0f3ff",
+                            "on-tertiary-fixed-variant": "#842225",
+                            "inverse-on-surface": "#ebf1ff",
+                            "surface-container": "#e7eefe",
+                            "secondary-fixed-dim": "#b7c4ff",
+                            "on-error-container": "#93000a",
+                            "on-tertiary-container": "#711419",
+                            "surface-variant": "#dce2f3",
+                            "outline-variant": "#bbcabf",
+                            "secondary": "#1d4ed8",
+                            "on-secondary-fixed": "#001551",
+                            "surface-container-lowest": "#ffffff",
+                            "on-secondary-fixed-variant": "#0039b5",
+                            "tertiary-fixed-dim": "#ffb3af",
+                            "on-surface": "#151c27",
+                            "primary": "#006c49",
+                            "error": "#ba1a1a",
+                            "primary-fixed-dim": "#4edea3",
+                            "primary-fixed": "#6ffbbe",
+                            "on-primary": "#ffffff",
+                            "surface-container-high": "#e2e8f8",
+                            "inverse-surface": "#2a313d",
+                            "tertiary-fixed": "#ffdad7",
+                            "secondary-container": "#4069f2",
+                            "on-tertiary": "#ffffff",
+                            "tertiary": "#a43a3a",
+                            "tertiary-container": "#fc7c78",
+                            "outline": "#6c7a71",
+                            "on-surface-variant": "#3c4a42",
+                            "on-background": "#151c27",
+                            "background": "#f9f9ff",
+                            "surface-container-highest": "#dce2f3",
+                            "inverse-primary": "#4edea3",
+                            "surface-tint": "#006c49",
+                            "surface": "#f9f9ff",
+                            "secondary-fixed": "#dce1ff",
+                            "surface-dim": "#d3daea",
+                            "on-primary-container": "#00422b",
+                            "on-secondary": "#ffffff",
+                            "surface-bright": "#f9f9ff",
+                            "on-error": "#ffffff",
+                            "on-tertiary-fixed": "#410005",
+                            "on-secondary-container": "#fffbff",
+                            "primary-container": "#10b981",
+                            "error-container": "#ffdad6",
+                            "on-primary-fixed": "#002113"
+                        },
+                        "fontFamily": {
+                            "headline": ["Inter"],
+                            "display": ["Inter"],
+                            "body": ["Inter"],
+                            "label": ["Inter"]
+                        }
+                    }
+                }
+            }
+        </script>
         <style>
+            .material-symbols-outlined {
+                font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            }
             #map {
                 min-height: 520px;
             }
@@ -14,21 +82,19 @@
     </head>
     <body class="bg-slate-100 text-slate-900 antialiased">
         <div class="min-h-screen">
-            <header class="border-b border-slate-200 bg-white/90 backdrop-blur-xl">
-                <div class="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
-                    <div class="flex items-center gap-3">
-                        <div class="rounded-2xl bg-emerald-900/10 px-3 py-2 text-emerald-800 font-semibold tracking-[0.08em]">
-                            SIPANTAU
+            <!-- Top Navigation Bar -->
+            <header class="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-outline-variant px-4 lg:px-8 py-4">
+                <div class="mx-auto flex flex-col gap-4 md:flex-row md:items-center md:justify-between md:gap-6">
+                    <div class="flex flex-col gap-3 md:flex-row md:items-center md:gap-4">
+                        <div class="flex items-center gap-2">
+                            <span class="material-symbols-outlined text-primary text-2xl" style="font-variation-settings: 'FILL' 1;">eco</span>
+                            <span class="text-xl font-black text-primary tracking-tight">SIPANTAU</span>
                         </div>
-                        <nav class="hidden items-center gap-8 text-sm font-medium text-slate-700 lg:flex">
-                            <a href="/" class="transition hover:text-emerald-700">Beranda</a>
-                            <a href="/peta" class="text-emerald-700">Peta</a>
-                            <a href="/" class="transition hover:text-emerald-700">Lapor</a>
+                        <nav class="flex flex-wrap gap-3 items-center text-sm md:gap-5">
+                            <a class="font-semibold transition-colors {{ request()->url() === url('/') ? 'text-primary' : 'text-on-surface hover:text-primary' }}" href="{{ url('/') }}">Beranda</a>
+                            <a class="font-semibold transition-colors {{ request()->routeIs('peta') ? 'text-primary' : 'text-on-surface hover:text-primary' }}" href="{{ route('peta') }}">Peta</a>
                         </nav>
                     </div>
-                    <a href="/" class="inline-flex items-center justify-center rounded-2xl border border-slate-300/90 bg-white px-4 py-3 text-sm font-semibold text-slate-700 shadow-sm transition hover:border-emerald-300 hover:text-emerald-700">
-                        Kembali ke Beranda
-                    </a>
                 </div>
             </header>
 

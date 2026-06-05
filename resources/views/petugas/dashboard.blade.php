@@ -1,22 +1,18 @@
-<!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>Dashboard Petugas | SIPANTAU</title>
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
-</head>
-<body class="bg-slate-50 text-slate-900">
-    <div class="flex h-screen">
-        @include('partials.sidebar')
+<x-app-layout>
+    <x-slot name="header">
+        <div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+            <div>
+                <h2 class="font-semibold text-xl text-gray-800 leading-tight">{{ __('Dashboard Petugas') }}</h2>
+                <p class="text-sm text-slate-500">Kelola semua Tugas lingkungan Anda di sini.</p>
+            </div>
+        </div>
+    </x-slot>
 
-        <div class="flex-1 flex flex-col overflow-hidden bg-slate-50">
+    <div class="flex-1 flex flex-col overflow-hidden bg-slate-50">
             <div class="flex-1 overflow-auto">
                 <div class="p-8 space-y-6">
                     <div class="flex flex-col gap-6 xl:flex-row xl:items-center xl:justify-between">
-                        <div class="space-y-2">
-                            <p class="text-sm uppercase tracking-[0.2em] text-emerald-700 font-semibold">Petugas</p>
+                        <div class="space-y-2">                            
                             <h1 class="text-4xl font-bold text-slate-900">Tugas Hari Ini</h1>
                             <p class="max-w-2xl text-slate-600">Daftar penugasan kebersihan area. Kelola tugas yang sedang berjalan dan update status setiap laporan.</p>
                         </div>
@@ -67,6 +63,4 @@
                 </div>
             </div>
         </div>
-    </div>
-</body>
-</html>
+</x-app-layout>
