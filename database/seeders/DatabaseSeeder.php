@@ -22,7 +22,7 @@ class DatabaseSeeder extends Seeder
             'email' => 'admin@example.com',
             'phone' => '081200000001',
             'role' => User::ROLE_ADMIN,
-            'password' => bcrypt('admin12345'),
+            'password' => bcrypt('12345678'),
             'email_verified_at' => now(),
         ]);
 
@@ -31,16 +31,16 @@ class DatabaseSeeder extends Seeder
             'email' => 'petugas@example.com',
             'phone' => '081200000002',
             'role' => User::ROLE_PETUGAS,
-            'password' => bcrypt('petugas12345'),
+            'password' => bcrypt('12345678'),
             'email_verified_at' => now(),
         ]);
 
         User::factory()->create([
-            'name' => 'Test Masyarakat',
+            'name' => 'Masyarakat 01',
             'email' => 'masyarakat@example.com',
             'phone' => '081200000003',
             'role' => User::ROLE_MASYARAKAT,
-            'password' => bcrypt('masyarakat12345'),
+            'password' => bcrypt('12345678'),
             'email_verified_at' => now(),
         ]);
     }

@@ -74,43 +74,37 @@
     </div>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             flatpickr('#tanggal', { dateFormat: 'Y-m-d' });
 
-            let map;
-            let marker;
-            window.initMap = function() {
-                const latInput = document.getElementById('latitude');
-                const lngInput = document.getElementById('longitude');
-                const initialLat = parseFloat(latInput.value) || -6.200000;
-                const initialLng = parseFloat(lngInput.value) || 106.816666;
+            const latInput = document.getElementById('latitude');
+            const lngInput = document.getElementById('longitude');
+            const initialLat = parseFloat(latInput.value) || -6.200000;
+            const initialLng = parseFloat(lngInput.value) || 106.816666;
 
-                map = new google.maps.Map(document.getElementById('map-create'), {
-                    center: { lat: initialLat, lng: initialLng },
-                    zoom: 13,
-                });
+            const map = L.map('map-create').setView([initialLat, initialLng], 13);
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                maxZoom: 19,
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            }).addTo(map);
 
-                marker = new google.maps.Marker({
-                    position: { lat: initialLat, lng: initialLng },
-                    map: map,
-                    draggable: true,
-                });
+            const marker = L.marker([initialLat, initialLng], { draggable: true }).addTo(map);
 
-                map.addListener('click', function(e) {
-                    const lat = e.latLng.lat();
-                    const lng = e.latLng.lng();
-                    marker.setPosition(e.latLng);
-                    latInput.value = lat;
-                    lngInput.value = lng;
-                });
+            map.on('click', function(e) {
+                const { lat, lng } = e.latlng;
+                marker.setLatLng(e.latlng);
+                latInput.value = lat;
+                lngInput.value = lng;
+            });
 
-                marker.addListener('dragend', function(e) {
-                    latInput.value = e.latLng.lat();
-                    lngInput.value = e.latLng.lng();
-                });
-            };
+            marker.on('dragend', function(e) {
+                const pos = marker.getLatLng();
+                latInput.value = pos.lat;
+                lngInput.value = pos.lng;
+            });
         });
     </script>
-    <script async defer src="https://maps.googleapis.com/maps/api/js?key={{ config('services.google_maps.key') }}&callback=initMap"></script>
 </x-app-layout>

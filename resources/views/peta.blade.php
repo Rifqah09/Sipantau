@@ -232,14 +232,38 @@
                 attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             }).addTo(map);
 
+            const colorMap = {
+                emerald: '#10b981',
+                amber: '#f59e0b',
+                red: '#ef4444',
+                slate: '#64748b'
+            };
+
+            const baseUrl = "{{ url('laporans') }}";
+            const markersLayer = L.featureGroup();
+
             if (laporans.length === 0) {
                 L.marker(defaultCenter).addTo(map).bindPopup('Belum ada lokasi laporan dengan koordinat.');
-            }
+            } else {
+                laporans.forEach((item) => {
+                    const color = colorMap[item.iconColor] ?? colorMap.slate;
+                    const marker = L.circleMarker([item.latitude, item.longitude], {
+                        radius: 8,
+                        color: color,
+                        weight: 2,
+                        fillColor: color,
+                        fillOpacity: 0.9,
+                    });
 
-            laporans.forEach((item) => {
-                const popup = `<div style="font-size:0.95rem;"><strong>${item.judul}</strong><br>${item.lokasi}<br>Status: ${item.status}</div>`;
-                L.marker([item.latitude, item.longitude]).addTo(map).bindPopup(popup);
-            });
+                    const popup = `<div style="font-size:0.95rem;"><strong>${item.judul}</strong><br>${item.lokasi}<br>Status: ${item.status}<br><a href="${baseUrl}/${item.id}" class="text-emerald-600">Lihat detail</a></div>`;
+
+                    marker.bindPopup(popup);
+                    markersLayer.addLayer(marker);
+                });
+
+                markersLayer.addTo(map);
+                map.fitBounds(markersLayer.getBounds().pad(0.2));
+            }
         </script>
     </body>
 </html>

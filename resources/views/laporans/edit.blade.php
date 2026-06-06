@@ -49,6 +49,11 @@
                         </div>
                     </div>
 
+                    <div>
+                        <label class="block text-sm font-semibold text-slate-900 mb-2">Pilih Lokasi di Peta</label>
+                        <div id="map-edit" class="h-64 w-full rounded-2xl border border-slate-200"></div>
+                    </div>
+
                     @if(auth()->user()->isAdmin())
                         <div>
                             <label for="status" class="block text-sm font-semibold text-slate-900 mb-2">Status</label>
@@ -75,3 +80,34 @@
         </div>
     </div>
 </x-app-layout>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="" />
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const latInput = document.getElementById('latitude');
+        const lngInput = document.getElementById('longitude');
+        const initialLat = parseFloat(latInput.value) || -6.200000;
+        const initialLng = parseFloat(lngInput.value) || 106.816666;
+
+        const map = L.map('map-edit').setView([initialLat, initialLng], 13);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+
+        const marker = L.marker([initialLat, initialLng], { draggable: true }).addTo(map);
+
+        map.on('click', function(e) {
+            const { lat, lng } = e.latlng;
+            marker.setLatLng(e.latlng);
+            latInput.value = lat;
+            lngInput.value = lng;
+        });
+
+        marker.on('dragend', function(e) {
+            const pos = marker.getLatLng();
+            latInput.value = pos.lat;
+            lngInput.value = pos.lng;
+        });
+    });
+</script>
