@@ -5,10 +5,8 @@
         </h2>
     </x-slot>
 
-    <div class="flex min-h-[calc(100vh-5rem)] overflow-hidden">
-        @include('partials.sidebar')
-
-        <div class="flex-1 py-12">
+    <div class="min-h-[calc(100vh-5rem)] overflow-auto bg-slate-50">
+        <div class="py-12">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
                 <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
                     <div class="max-w-xl">

@@ -1,32 +1,35 @@
 <x-app-layout>
     <x-slot name="header">
-        <div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+        <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <div>
                 <h2 class="font-semibold text-xl text-gray-800 leading-tight">{{ __('Dashboard Petugas') }}</h2>
                 <p class="text-sm text-slate-500">Kelola semua Tugas lingkungan Anda di sini.</p>
             </div>
+
         </div>
     </x-slot>
 
-    <div class="flex min-h-[calc(100vh-5rem)] overflow-hidden">
-        @include('partials.sidebar')
-
-        <div class="flex-1 overflow-auto bg-slate-50">
-            <div class="p-8 space-y-6">
+    <div class="min-h-[calc(100vh-5rem)] overflow-auto bg-slate-100">
+        <div class="p-4 sm:p-8 space-y-6">
+            <section class="rounded-[2rem] border border-slate-200 bg-white p-8 shadow-xl">
                 <div class="flex flex-col gap-6 xl:flex-row xl:items-center xl:justify-between">
-                        <div class="space-y-2">
-                            <h1 class="text-4xl font-bold text-slate-900">Tugas Hari Ini</h1>
-                            <p class="max-w-2xl text-slate-600">Kelola laporan yang sudah diverifikasi, terima tugas lapangan, dan update penanganan hingga selesai.</p>
+                    <div>
+                        <p class="text-sm uppercase tracking-[0.32em] text-emerald-700 font-semibold">Petugas Kebersihan</p>
+                        <h1 class="mt-3 text-3xl sm:text-4xl font-black text-slate-900">Tugas Lapangan Hari Ini</h1>
+                        <p class="mt-3 max-w-2xl text-sm text-slate-600 leading-7">Pantau tugas terverifikasi, update hasil penanganan, dan tetap cepat dalam merespon laporan masyarakat.</p>
+                    </div>
+                    <div class="inline-flex items-center gap-3 rounded-3xl bg-slate-50 px-5 py-4 shadow-sm">
+                        <div class="rounded-2xl bg-emerald-100 p-3 text-emerald-700">
+                            <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V8H3v11a2 2 0 002 2z"/></svg>
                         </div>
-                        <div class="inline-flex items-center gap-3 rounded-3xl border border-slate-200 bg-white px-5 py-3 shadow-sm">
-                            <div class="rounded-2xl bg-slate-100 px-3 py-2 text-slate-700 text-xs font-semibold uppercase tracking-[0.2em]">Tanggal</div>
-                            <div class="text-right">
-                                <p class="text-sm text-slate-500">{{ now()->translatedFormat('d M Y') }}</p>
-                            </div>
+                        <div class="text-sm text-slate-600">
+                            <p class="font-semibold text-slate-900">{{ now()->translatedFormat('d M Y') }}</p>
+                            <p class="text-xs uppercase tracking-[0.3em] text-slate-500">Tanggal Hari Ini</p>
                         </div>
                     </div>
-
-                    <div class="grid gap-6 xl:grid-cols-3">
+                </div>
+            </section>
+            <div class="grid gap-6 xl:grid-cols-3">
                         <div class="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
                             <div class="flex items-center justify-between gap-3">
                                 <div>

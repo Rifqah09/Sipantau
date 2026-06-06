@@ -8,13 +8,34 @@
         </div>
     </x-slot>
 
-    <div class="flex min-h-[calc(100vh-5rem)] overflow-hidden">
-        @include('partials.sidebar')
-
-        <div class="flex-1 overflow-auto bg-slate-50">
-            <div class="p-8 space-y-6">
-                <div class="grid grid-cols-3 gap-6">
-                    <div class="col-span-2 space-y-6">
+    <div class="min-h-[calc(100vh-5rem)] overflow-auto bg-slate-100">
+        <div class="p-4 sm:p-8 space-y-6">
+            <section class="relative rounded-[2rem] border border-slate-200 bg-gradient-to-r from-slate-950 via-emerald-700 to-cyan-500 p-8 shadow-xl text-white overflow-hidden">
+                <div class="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_rgba(255,255,255,0.25),_transparent_35%)]"></div>
+                <div class="relative grid gap-6 lg:grid-cols-[2fr_1fr] lg:items-center">
+                    <div class="space-y-4">
+                        <p class="text-xs uppercase tracking-[0.32em] text-emerald-200/80 font-semibold">Halo {{ Auth::user()->name }}</p>
+                        <h1 class="text-3xl sm:text-4xl font-black tracking-tight">Pantau Laporan dan Penanganan Lingkungan</h1>
+                        <p class="max-w-2xl text-sm sm:text-base text-slate-100/85 leading-7">Lihat ringkasan laporan Anda, pantau status penanganan, dan terus berkontribusi untuk lingkungan yang lebih bersih.</p>
+                    </div>
+                    <div class="grid gap-4 sm:grid-cols-3">
+                        <div class="rounded-3xl border border-white/10 bg-white/10 p-5 backdrop-blur">
+                            <p class="text-[11px] uppercase tracking-[0.32em] text-slate-200">Total Laporan</p>
+                            <p class="mt-4 text-3xl font-bold">{{ $laporans->count() }}</p>
+                        </div>
+                        <div class="rounded-3xl border border-white/10 bg-white/10 p-5 backdrop-blur">
+                            <p class="text-[11px] uppercase tracking-[0.32em] text-slate-200">Diproses</p>
+                            <p class="mt-4 text-3xl font-bold">{{ $laporans->where('status', 'diproses')->count() }}</p>
+                        </div>
+                        <div class="rounded-3xl border border-white/10 bg-white/10 p-5 backdrop-blur">
+                            <p class="text-[11px] uppercase tracking-[0.32em] text-slate-200">Selesai</p>
+                            <p class="mt-4 text-3xl font-bold">{{ $laporans->where('status', 'selesai')->count() }}</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <div class="grid grid-cols-1 xl:grid-cols-[2fr_1fr] gap-6">
+                <div class="space-y-6">
                         <div class="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
                             <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                                 <div>

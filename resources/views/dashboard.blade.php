@@ -8,10 +8,7 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="bg-slate-50 text-slate-900">
-    <div class="flex h-screen">
-        <!-- Sidebar -->
-        @include('partials.sidebar')
-
+    <div class="min-h-screen flex flex-col overflow-hidden bg-slate-50">
         <!-- Main Content -->
         <div class="flex-1 flex flex-col overflow-hidden">
             <!-- Top Bar -->
@@ -36,9 +33,9 @@
 
             <!-- Scrollable Content Area -->
             <div class="flex-1 overflow-auto">
-                <div class="p-8 grid grid-cols-3 gap-6">
+                <div class="p-8 grid grid-cols-1 xl:grid-cols-[2fr_1fr] gap-6">
                     <!-- Reports Section (Left: 2 columns) -->
-                    <div class="col-span-2 space-y-6">
+                    <div class="space-y-6">
                         <!-- Reports Grid -->
                         <div class="space-y-6">
                             <!-- Report 1 -->

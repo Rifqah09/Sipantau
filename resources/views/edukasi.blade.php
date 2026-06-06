@@ -8,11 +8,8 @@
         </div>
     </x-slot>
 
-    <div class="flex min-h-[calc(100vh-5rem)] overflow-hidden">
-        @include('partials.sidebar')
-
-        <div class="flex-1 overflow-auto bg-slate-50">
-            <div class="p-8 space-y-6">
+    <div class="min-h-[calc(100vh-5rem)] overflow-auto bg-slate-50">
+        <div class="p-4 sm:p-8 space-y-6">
                 <div class="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
                     <h1 class="text-3xl font-bold text-slate-900">Edukasi untuk Masyarakat</h1>
                     <p class="mt-3 text-slate-600">Informasi singkat untuk membantu Anda mengenali jenis laporan dan tindakan yang tepat.</p>

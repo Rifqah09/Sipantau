@@ -9,6 +9,9 @@
                 <nav class="hidden lg:flex items-center gap-6 text-sm font-medium text-slate-700">
                     <a href="{{ route('dashboard') }}" class="{{ request()->routeIs('dashboard','admin.dashboard','petugas.dashboard') ? 'text-emerald-900 font-semibold' : 'transition hover:text-emerald-700' }}">Dashboard</a>
                     <a href="{{ route('laporans.index') }}" class="{{ request()->routeIs('laporans.*') ? 'text-emerald-900 font-semibold' : 'transition hover:text-emerald-700' }}">Laporan</a>
+                    @if(auth()->user()->isPetugas())
+                        <a href="{{ route('tanggapans.create') }}" class="{{ request()->routeIs('tanggapans.create') ? 'text-emerald-900 font-semibold' : 'transition hover:text-emerald-700' }}">Update Penanganan</a>
+                    @endif
                     @if(auth()->user()->isAdmin())
                         <a href="{{ route('verifikasi-laporans.index') }}" class="{{ request()->routeIs('verifikasi-laporans.*') ? 'text-emerald-900 font-semibold' : 'transition hover:text-emerald-700' }}">Verifikasi</a>
                     @endif
@@ -47,6 +50,9 @@
         <div class="pt-2 pb-3 space-y-1 px-4">
             <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard','admin.dashboard','petugas.dashboard')">Dashboard</x-responsive-nav-link>
             <x-responsive-nav-link :href="route('laporans.index')" :active="request()->routeIs('laporans.*')">Laporan</x-responsive-nav-link>
+            @if(auth()->user()->isPetugas())
+                <x-responsive-nav-link :href="route('tanggapans.create')" :active="request()->routeIs('tanggapans.create')">Update Penanganan</x-responsive-nav-link>
+            @endif
             @if(auth()->user()->isAdmin())
                 <x-responsive-nav-link :href="route('verifikasi-laporans.index')" :active="request()->routeIs('verifikasi-laporans.*')">Verifikasi</x-responsive-nav-link>
             @endif
