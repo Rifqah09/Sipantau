@@ -8,7 +8,10 @@
         </div>
     </x-slot>
 
-    <div class="flex-1 overflow-auto p-8 space-y-6">
+    <div class="flex min-h-[calc(100vh-5rem)] overflow-hidden">
+        @include('partials.sidebar')
+
+        <div class="flex-1 overflow-auto p-8 space-y-6">
                 <div class="grid gap-6 sm:grid-cols-2 xl:grid-cols-4">
                     <div class="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
                         <p class="text-sm text-slate-500">Total Laporan</p>
@@ -83,4 +86,5 @@
                     </aside>
                 </div>
             </div>
+    </div>
 </x-app-layout>

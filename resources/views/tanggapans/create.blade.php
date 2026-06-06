@@ -14,6 +14,32 @@
     <div class="py-6">
         <div class="mx-auto max-w-3xl sm:px-6 lg:px-8">
             <div class="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
+                @if(isset($selectedLaporan))
+                    <div class="rounded-3xl border border-slate-200 bg-slate-50 p-5 mb-6">
+                        <p class="text-sm uppercase tracking-[0.2em] text-slate-500">Ringkasan Laporan</p>
+                        <h3 class="mt-3 text-xl font-semibold text-slate-900">{{ $selectedLaporan->judul }}</h3>
+                        <p class="mt-2 text-sm text-slate-600">{{ Str::limit($selectedLaporan->deskripsi, 140) }}</p>
+
+                        <div class="mt-4 grid gap-3 sm:grid-cols-2">
+                            <div class="rounded-2xl bg-white border border-slate-200 p-4">
+                                <p class="text-xs uppercase tracking-[0.2em] text-slate-500">Pelapor</p>
+                                <p class="mt-2 font-semibold text-slate-900">{{ $selectedLaporan->user->name }}</p>
+                                <p class="text-sm text-slate-500">{{ $selectedLaporan->lokasi }}</p>
+                            </div>
+                            <div class="rounded-2xl bg-white border border-slate-200 p-4">
+                                <p class="text-xs uppercase tracking-[0.2em] text-slate-500">Verifikasi Admin</p>
+                                @if($selectedLaporan->verifikasiLaporans->isNotEmpty())
+                                    <p class="mt-2 font-semibold text-slate-900">{{ ucfirst($selectedLaporan->verifikasiLaporans->last()->status) }}</p>
+                                    <p class="mt-2 text-sm text-slate-600">{{ $selectedLaporan->verifikasiLaporans->last()->catatan ?? 'Tidak ada catatan verifikasi.' }}</p>
+                                @else
+                                    <p class="mt-2 font-semibold text-slate-900">Belum diverifikasi</p>
+                                    <p class="mt-2 text-sm text-slate-600">Tunggu proses verifikasi admin sebelum menyelesaikan penanganan.</p>
+                                @endif
+                            </div>
+                        </div>
+                    </div>
+                @endif
+
                 <form action="{{ route('tanggapans.store') }}" method="POST" enctype="multipart/form-data" class="space-y-6">
                     @csrf
 

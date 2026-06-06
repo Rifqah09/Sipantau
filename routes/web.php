@@ -48,6 +48,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
         return view('masyarakat.dashboard', compact('laporans'));
     })->name('dashboard');
 
+    Route::get('/edukasi', function () {
+        return view('edukasi');
+    })->name('edukasi');
+
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');

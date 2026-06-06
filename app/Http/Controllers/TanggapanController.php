@@ -32,8 +32,9 @@ class TanggapanController extends Controller
         }
 
         $laporans = Laporan::where('status', 'diproses')->orderBy('created_at', 'desc')->get();
+        $selectedLaporan = Laporan::with(['user', 'verifikasiLaporans'])->find(request('laporan_id'));
 
-        return view('tanggapans.create', compact('laporans'));
+        return view('tanggapans.create', compact('laporans', 'selectedLaporan'));
     }
 
     /**

@@ -3,7 +3,15 @@
         <div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
             <div>
                 <h2 class="font-semibold text-xl text-gray-800 leading-tight">{{ __('Detail Laporan') }}</h2>
-                <p class="text-sm text-slate-500">Informasi lengkap laporan Anda.</p>
+                <p class="text-sm text-slate-500">
+                    @if(auth()->user()->isPetugas())
+                        Lihat informasi dari masyarakat dan hasil verifikasi admin. Update penanganan jika sudah diproses.
+                    @elseif(auth()->user()->isAdmin())
+                        Tinjau laporan masyarakat, kelola verifikasi, dan monitor tindak lanjut petugas.
+                    @else
+                        Informasi lengkap laporan Anda.
+                    @endif
+                </p>
             </div>
             <a href="{{ route('laporans.index') }}" class="inline-flex items-center rounded-xl bg-slate-100 px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-200 transition">
                 Kembali ke Laporan Saya
@@ -42,6 +50,68 @@
 
                         <h1 class="text-3xl font-semibold text-slate-900">{{ $laporan->judul }}</h1>
                         <p class="text-sm leading-7 text-slate-600">{{ $laporan->deskripsi }}</p>
+
+                        <div class="mt-6 grid gap-4 lg:grid-cols-2">
+                            <div class="rounded-3xl bg-slate-50 p-5 border border-slate-200">
+                                <p class="text-sm font-semibold text-slate-900">Tingkat Lanjut</p>
+                                <p class="mt-2 text-sm text-slate-600">Berisi ringkasan status dan langkah selanjutnya sesuai laporan dari masyarakat dan admin.</p>
+
+                                <div class="mt-4 space-y-3">
+                                    <div class="rounded-2xl bg-white border border-slate-200 p-4">
+                                        <p class="text-xs uppercase tracking-[0.2em] text-slate-500">Status Laporan</p>
+                                        <p class="mt-2 text-lg font-semibold text-slate-900">{{ ucfirst($laporan->status) }}</p>
+                                    </div>
+
+                                    <div class="rounded-2xl bg-white border border-slate-200 p-4">
+                                        <p class="text-xs uppercase tracking-[0.2em] text-slate-500">Dari Masyarakat</p>
+                                        <p class="mt-2 text-sm text-slate-600">{{ Str::limit($laporan->deskripsi, 120) }}</p>
+                                    </div>
+
+                                    <div class="rounded-2xl bg-white border border-slate-200 p-4">
+                                        <p class="text-xs uppercase tracking-[0.2em] text-slate-500">Verifikasi Admin</p>
+                                        @if($laporan->verifikasiLaporans->isNotEmpty())
+                                            <p class="mt-2 font-semibold text-slate-900">{{ ucfirst($laporan->verifikasiLaporans->last()->status) }}</p>
+                                            <p class="mt-2 text-sm text-slate-600">{{ $laporan->verifikasiLaporans->last()->catatan ?? 'Tidak ada catatan verifikasi.' }}</p>
+                                        @else
+                                            <p class="mt-2 font-semibold text-slate-900">Belum diverifikasi</p>
+                                            <p class="mt-2 text-sm text-slate-600">Petugas belum dapat memulai penanganan sampai admin menyetujui atau verifikasi.</p>
+                                        @endif
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="rounded-3xl bg-slate-50 p-5 border border-slate-200">
+                                <p class="text-sm font-semibold text-slate-900">Update Penanganan</p>
+                                <p class="mt-2 text-sm text-slate-600">Gunakan bagian ini untuk menyesuaikan tanggapan dengan hasil lapangan.</p>
+
+                                <div class="mt-4 space-y-3">
+                                    @if(auth()->user()->isPetugas())
+                                        @if($laporan->status === 'diproses')
+                                            <div class="rounded-2xl bg-white border border-slate-200 p-4">
+                                                <p class="text-sm text-slate-600">Laporan ini siap ditangani. Klik tombol untuk mencatat hasil penanganan dan bukti foto.</p>
+                                            </div>
+                                            <a href="{{ route('tanggapans.create') }}?laporan_id={{ $laporan->id }}" class="inline-flex items-center rounded-2xl bg-emerald-700 px-4 py-2 text-sm font-semibold text-white hover:bg-emerald-800 transition">Update Penanganan</a>
+                                        @elseif($laporan->status === 'selesai')
+                                            <div class="rounded-2xl bg-white border border-slate-200 p-4">
+                                                <p class="text-sm font-semibold text-slate-900">Penanganan selesai</p>
+                                                <p class="mt-2 text-sm text-slate-600">Laporan sudah ditutup dan petugas telah mengirimkan hasil penanganan.</p>
+                                            </div>
+                                        @else
+                                            <div class="rounded-2xl bg-white border border-slate-200 p-4">
+                                                <p class="text-sm font-semibold text-slate-900">Menunggu langkah selanjutnya</p>
+                                                <p class="mt-2 text-sm text-slate-600">Petugas dapat mulai menangani setelah admin memverifikasi laporan.</p>
+                                            </div>
+                                        @endif
+                                    @else
+                                        <div class="rounded-2xl bg-white border border-slate-200 p-4">
+                                            <p class="text-sm font-semibold text-slate-900">Laporan ini akan ditindaklanjuti oleh petugas.</p>
+                                            <p class="mt-2 text-sm text-slate-600">Perubahan akan muncul di riwayat penanganan setelah petugas mengirimkan update.</p>
+                                        </div>
+                                    @endif
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
                         <div class="rounded-3xl bg-white p-4 text-sm text-slate-700 border border-slate-200 shadow-sm">
                             <p class="font-semibold">Lokasi:</p>
@@ -85,7 +155,7 @@
                             </form>
                         @endif
                         @if(auth()->user()->isPetugas() && $laporan->status === 'diproses')
-                            <a href="{{ route('tanggapans.create') }}?laporan_id={{ $laporan->id }}" class="block rounded-2xl bg-gradient-to-r from-emerald-600 to-emerald-700 px-4 py-2 text-sm font-semibold text-white hover:from-emerald-700 hover:to-emerald-800 transition">Tangani Laporan</a>
+                            <a href="{{ route('tanggapans.create') }}?laporan_id={{ $laporan->id }}" class="block rounded-2xl bg-gradient-to-r from-emerald-600 to-emerald-700 px-4 py-2 text-sm font-semibold text-white hover:from-emerald-700 hover:to-emerald-800 transition">Update Penanganan</a>
                         @endif
                     </div>
                 </div>
