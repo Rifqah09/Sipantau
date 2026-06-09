@@ -20,6 +20,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/admin/dashboard', [AdminDashboardController::class, 'index'])
         ->name('admin.dashboard');
 
+    Route::get('/admin/waktu-eksekusi', [AdminDashboardController::class, 'executionTime'])
+        ->name('admin.execution-time');
+
     Route::get('/petugas/dashboard', function () {
         if (! auth()->user()?->isPetugas()) {
             abort(403);
@@ -43,9 +46,40 @@ Route::middleware(['auth', 'verified'])->group(function () {
             return redirect()->route('petugas.dashboard');
         }
 
-        $laporans = auth()->user()->laporans()->with(['lampiranLaporans', 'verifikasiLaporans'])->latest()->get();
+        $laporans = auth()->user()->laporans()->with(['lampiranLaporans', 'verifikasiLaporans', 'tanggapans'])->latest()->get();
+        $executionMinutes = $laporans
+            ->where('status', 'selesai')
+            ->map(fn (Laporan $laporan) => $laporan->executionMinutes())
+            ->filter();
 
-        return view('masyarakat.dashboard', compact('laporans'));
+        $formatExecutionDuration = function (int $minutes): string {
+            $days = intdiv($minutes, 1440);
+            $hours = intdiv($minutes % 1440, 60);
+            $remainingMinutes = $minutes % 60;
+
+            $parts = [];
+
+            if ($days > 0) {
+                $parts[] = $days . ' hari';
+            }
+
+            if ($hours > 0) {
+                $parts[] = $hours . ' jam';
+            }
+
+            if ($remainingMinutes > 0 || empty($parts)) {
+                $parts[] = $remainingMinutes . ' menit';
+            }
+
+            return implode(' ', array_slice($parts, 0, 2));
+        };
+
+        $averageExecutionMinutes = (int) round($executionMinutes->avg() ?? 0);
+        $averageExecutionLabel = $averageExecutionMinutes > 0
+            ? $formatExecutionDuration($averageExecutionMinutes)
+            : 'Belum ada';
+
+        return view('masyarakat.dashboard', compact('laporans', 'averageExecutionLabel'));
     })->name('dashboard');
 
     Route::get('/edukasi', function () {

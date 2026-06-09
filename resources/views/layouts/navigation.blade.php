@@ -14,6 +14,7 @@
                     @endif
                     @if(auth()->user()->isAdmin())
                         <a href="{{ route('verifikasi-laporans.index') }}" class="{{ request()->routeIs('verifikasi-laporans.*') ? 'text-emerald-900 font-semibold' : 'transition hover:text-emerald-700' }}">Verifikasi</a>
+                        <a href="{{ route('admin.execution-time') }}" class="{{ request()->routeIs('admin.execution-time') ? 'text-emerald-900 font-semibold' : 'transition hover:text-emerald-700' }}">Waktu Eksekusi</a>
                     @endif
                 </nav>
             </div>
@@ -55,6 +56,7 @@
             @endif
             @if(auth()->user()->isAdmin())
                 <x-responsive-nav-link :href="route('verifikasi-laporans.index')" :active="request()->routeIs('verifikasi-laporans.*')">Verifikasi</x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('admin.execution-time')" :active="request()->routeIs('admin.execution-time')">Waktu Eksekusi</x-responsive-nav-link>
             @endif
         </div>
         <div class="pt-4 pb-1 border-t border-slate-200 px-4">

@@ -123,7 +123,7 @@
             </section>
 
             {{-- ===== STAT CARDS ===== --}}
-            <div class="grid gap-5 sm:grid-cols-2 xl:grid-cols-4">
+            <div class="grid gap-5 sm:grid-cols-2 xl:grid-cols-5">
 
                 {{-- Total Laporan --}}
                 <div class="stat-card relative overflow-hidden rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
@@ -193,6 +193,23 @@
                         </span>
                     </div>
                     <p class="mt-3 text-xs text-emerald-600 font-medium">Berhasil diselesaikan</p>
+                </div>
+
+                {{-- Waktu Eksekusi Rata-rata --}}
+                <div class="stat-card relative overflow-hidden rounded-2xl border border-violet-100 bg-white p-6 shadow-sm">
+                    <div class="bg-dot bg-violet-400"></div>
+                    <div class="flex items-start justify-between">
+                        <div>
+                            <p class="text-xs font-semibold uppercase tracking-widest text-slate-400">Waktu Eksekusi</p>
+                            <p class="mt-3 text-2xl font-extrabold text-violet-700 leading-tight">{{ $averageExecutionLabel }}</p>
+                        </div>
+                        <span class="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-violet-50 text-violet-700">
+                            <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m4-3a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                            </svg>
+                        </span>
+                    </div>
+                    <p class="mt-3 text-xs text-violet-600 font-medium">Dari laporan masyarakat sampai update petugas</p>
                 </div>
 
             </div>

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Carbon;
 
 class Laporan extends Model
 {
@@ -38,5 +39,34 @@ class Laporan extends Model
     public function verifikasiLaporans()
     {
         return $this->hasMany(VerifikasiLaporan::class);
+    }
+
+    public function latestTanggapan(): ?Tanggapan
+    {
+        return $this->tanggapans()
+            ->latest('created_at')
+            ->first();
+    }
+
+    public function executionStartedAt(): ?Carbon
+    {
+        return $this->created_at;
+    }
+
+    public function executionEndedAt(): ?Carbon
+    {
+        return $this->latestTanggapan()?->created_at;
+    }
+
+    public function executionMinutes(): ?int
+    {
+        $startedAt = $this->executionStartedAt();
+        $endedAt = $this->executionEndedAt();
+
+        if (! $startedAt || ! $endedAt) {
+            return null;
+        }
+
+        return max(1, $startedAt->diffInMinutes($endedAt));
     }
 }
